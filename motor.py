@@ -1,84 +1,91 @@
 import RPi.GPIO as io
 io.setmode(io.BCM)
 
-in1_pin = 17 #left motor
-in2_pin = 27  #left motor
+class MotorDriver(object):
+    """
+    Class controlled L293D driver controller
+    """
+    def __init__(self, speed, pwm_freq=50):
+        self.pwm_freq = pwm_freq #pwm frequency
+        self.in_fl = 17 #front left motor in_pin_1
+        self.in_rl = 27  #rear left motor in_pin_2
 
-in3_pin = 22 #right motor
-in4_pin = 23 #right motor
+        self.in_fr = 22 #front right motor in_pin_3
+        self.in_rr = 23 #rear right motor in_pin_4
 
-pwm_left_pin = 18 #leftside  speed control
-pwm_right_pin = 25 #leftside  speed control
+        self.pwm_left_pin = 18 #leftside  speed control
+        self.pwm_right_pin = 25 #rightside  speed control
 
-io.setup(in1_pin, io.OUT)
-io.setup(in2_pin, io.OUT)
-io.setup(in3_pin, io.OUT)
-io.setup(in4_pin, io.OUT)
-io.setup(pwm_left_pin, io.OUT)
-io.setup(pwm_right_pin, io.OUT)
+        self.pwm_left = io.PWM(pwm_left_pin, self.pwm_freq)
+        self.pwm_right = io.PWM(pwm_right_pin, self.pwm_freq)
 
-pwm_left = io.PWM(pwm_left_pin, 50)
-pwm_right = io.PWM(pwm_right_pin, 50)
+        io.setup(self.in_fl, io.OUT)
+        io.setup(self.in_rl, io.OUT)
+        io.setup(self.in_fr, io.OUT)
+        io.setup(self.in_rr, io.OUT)
+        io.setup(self.pwm_left, io.OUT)
+        io.setup(self.pwm_right, io.OUT)
 
+        self.currect_direction = self.set_direction("forward")
+        self.set_speed(0)
 
-def forward(speed):
-    io.output(in1_pin, True)
-    io.output(in2_pin, False)
-    io.output(in3_pin, True)
-    io.output(in4_pin, False)
-    pwm_left.ChangeDutyCycle(speed)
-    pwm_right.ChangeDutyCycle(speed)
+    def set_direction(direction = "forward"):
+        if direction == "forward":
+            io.output(in1_pin, True)
+            io.output(in2_pin, False)
+            io.output(in3_pin, True)
+            io.output(in4_pin, False)
 
-def backward(speed):
-    io.output(in1_pin, False)
-    io.output(in2_pin, True)
-    io.output(in3_pin, False)
-    io.output(in4_pin, True)
-    pwm_left.ChangeDutyCycle(speed)
-    pwm_right.ChangeDutyCycle(speed)
+        elif direction == "backward":
+            io.output(in1_pin, False)
+            io.output(in2_pin, True)
+            io.output(in3_pin, False)
+            io.output(in4_pin, True)
 
-def rotate(speed):
-    io.output(in1_pin, False)
-    io.output(in2_pin, True)
-    io.output(in3_pin, True)
-    io.output(in4_pin, False)
-    pwm_left.ChangeDutyCycle(speed)
-    pwm_right.ChangeDutyCycle(speed)
+        elif direction == "rotate":
+            io.output(in1_pin, False)
+            io.output(in2_pin, True)
+            io.output(in3_pin, True)
+            io.output(in4_pin, False)
 
-def turn_to_left(speed):
-    forward()
-    pwm_left.ChangeDutyCycle(speed*0.3)
-    pwm_right.ChangeDutyCycle(speed)
+        elif direction == "turn_to_left":
+            self.direction("forward")
+            self.pwm_left.ChangeDutyCycle(speed*0.3)
+            self.pwm_right.ChangeDutyCycle(speed)
 
-def turn_to_right(speed):
-    forward()
-    pwm_left.ChangeDutyCycle(speed)
-    pwm_right.ChangeDutyCycle(speed*0.3)
+        elif direction == "turn_to_right":
+            self.direction("forward")
+            self.pwm_left.ChangeDutyCycle(speed)
+            self.pwm_right.ChangeDutyCycle(speed*0.3)
 
+        return direction
 
+    def set_speed(speed):
+        self.pwm_left.ChangeDutyCycle(speed)
+        self.pwm_right.ChangeDutyCycle(speed)
 
+    def stop():
+        self.pwm_left.stop()
+        self.pwm_right.stop()
+        io.cleanup()
 
-forward()
-pwm_left.start(0)
-pwm_right.start(0)
 
 while True:
-    cmd = raw_input("Command, f/b/l/r/x(for exit) 0..9, E.g. f5 :")
-    direction = cmd[0]
+    motor = MotorDriver(0,50)
+    direction_map = {"f":"forward",
+                     "b":"backward",
+                     "c":"rotate",
+                     "l":"turn_to_left",
+                     "r":"turn_to_right"   }
+    cmd = raw_input("Command, f/b/l/r/x(for exit) 0..100, E.g. f5 :")
     speed = (float(cmd[1:]))
-
-    if direction == "f":
-        forward(speed)
-    elif direction == "b":
-        backward(speed)
-    elif direction == "l":
-        turn_to_left(speed)
-    elif direction == "r":
-        turn_to_right(speed)
-    elif direction == "x":
-        pwm.stop()
-        io.cleanup()
+    if direction_map[cmd[0]]:
+        motor.set_direction(direction_map[cmd[0]])
+        motor.set_speed(speed)
+    elif cmd[0] == "x":
+        motor.stop()
         break
-    else:
-        rotate(speed)
+    else
+        printf("command not found")
+
 
