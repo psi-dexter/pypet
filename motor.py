@@ -26,10 +26,11 @@ class MotorDriver(object):
         io.setup(self.pwm_left, io.OUT)
         io.setup(self.pwm_right, io.OUT)
 
-        self.currect_direction = self.set_direction("forward")
+        self.set_direction("forward")
+
         self.set_speed(0)
 
-    def set_direction(direction = "forward"):
+    def set_direction(direction):
         if direction == "forward":
             io.output(in1_pin, True)
             io.output(in2_pin, False)
@@ -47,22 +48,20 @@ class MotorDriver(object):
             io.output(in2_pin, True)
             io.output(in3_pin, True)
             io.output(in4_pin, False)
-
-        elif direction == "turn_to_left":
-            self.direction("forward")
-            self.pwm_left.ChangeDutyCycle(speed*0.3)
-            self.pwm_right.ChangeDutyCycle(speed)
-
-        elif direction == "turn_to_right":
-            self.direction("forward")
-            self.pwm_left.ChangeDutyCycle(speed)
-            self.pwm_right.ChangeDutyCycle(speed*0.3)
-
+        self.current_direction = direction
         return direction
+
+    def turn_to_left(value):
+        self.pwm_left.ChangeDutyCycle(self.current_speed*value)
+
+    def turn_to_right(value):
+        self.pwm_right.ChangeDutyCycle(self.current_speed*value)
 
     def set_speed(speed):
         self.pwm_left.ChangeDutyCycle(speed)
         self.pwm_right.ChangeDutyCycle(speed)
+        self.current_speed = speed
+        return speed
 
     def stop():
         self.pwm_left.stop()
@@ -87,5 +86,3 @@ while True:
         break
     else
         printf("command not found")
-
-
