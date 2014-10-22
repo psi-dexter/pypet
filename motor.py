@@ -84,5 +84,5 @@ while True:
     elif cmd[0] == "x":
         motor.stop()
         break
-    else
+    else:
         printf("command not found")
