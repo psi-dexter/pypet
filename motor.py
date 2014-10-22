@@ -74,8 +74,9 @@ class MotorDriver(object):
         io.cleanup()
 
 
+motor = MotorDriver(70,50)
 while True:
-    motor = MotorDriver(70,50)
+
     direction_map = {"f":"forward",
                      "b":"backward",
                      "c":"rotate",
