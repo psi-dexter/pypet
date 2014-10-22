@@ -16,8 +16,8 @@ class MotorDriver(object):
         self.pwm_left_pin = 18 #leftside  speed control
         self.pwm_right_pin = 25 #rightside  speed control
 
-        self.pwm_left = io.PWM(pwm_left_pin, self.pwm_freq)
-        self.pwm_right = io.PWM(pwm_right_pin, self.pwm_freq)
+        self.pwm_left = io.PWM(self.pwm_left_pin, self.pwm_freq)
+        self.pwm_right = io.PWM(self.pwm_right_pin, self.pwm_freq)
 
         io.setup(self.in_fl, io.OUT)
         io.setup(self.in_rl, io.OUT)
