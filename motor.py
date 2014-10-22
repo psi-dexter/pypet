@@ -66,7 +66,7 @@ class MotorDriver(object):
 
 
 
-    def stop():
+    def stop(self):
         self.pwm_left.stop()
         self.pwm_right.stop()
         io.cleanup()
