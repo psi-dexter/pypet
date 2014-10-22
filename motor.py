@@ -27,9 +27,9 @@ class MotorDriver(object):
         self.pwm_left = io.PWM(self.pwm_left_pin, self.pwm_freq)
         self.pwm_right = io.PWM(self.pwm_right_pin, self.pwm_freq)
 
-        self.set_direction("forward")
+        #self.set_direction("forward")
 
-        self.set_speed(0)
+        #self.set_speed(0)
 
     def set_direction(self, direction):
         if direction == "forward":
