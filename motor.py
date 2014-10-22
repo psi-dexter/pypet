@@ -32,22 +32,22 @@ class MotorDriver(object):
 
     def set_direction(direction):
         if direction == "forward":
-            io.output(in1_pin, True)
-            io.output(in2_pin, False)
-            io.output(in3_pin, True)
-            io.output(in4_pin, False)
+            io.output(self.in_fl, True)
+            io.output(self.in_rl, False)
+            io.output(self.in_fr, True)
+            io.output(self.in_rr, False)
 
         elif direction == "backward":
-            io.output(in1_pin, False)
-            io.output(in2_pin, True)
-            io.output(in3_pin, False)
-            io.output(in4_pin, True)
+            io.output(self.in_fl, False)
+            io.output(self.in_rl, True)
+            io.output(self.in_fr, False)
+            io.output(self.in_rr, True)
 
         elif direction == "rotate":
-            io.output(in1_pin, False)
-            io.output(in2_pin, True)
-            io.output(in3_pin, True)
-            io.output(in4_pin, False)
+            io.output(self.in_fl, False)
+            io.output(self.in_rl, True)
+            io.output(self.in_fr, True)
+            io.output(self.in_rr, False)
         self.current_direction = direction
         return direction
 
