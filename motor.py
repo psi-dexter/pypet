@@ -81,7 +81,7 @@ while True:
                      "r":"turn_to_right"   }
     cmd = raw_input("Command, f/b/l/r/x(for exit) 0..100, E.g. f5 :")
     speed = (float(cmd[1:]))
-    if direction_map[cmd[0]]:
+    if cmd[0] in direction_map:
         motor.set_direction(direction_map[cmd[0]])
         motor.set_speed(speed)
     elif cmd[0] == "x":
