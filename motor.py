@@ -5,7 +5,7 @@ class MotorDriver(object):
     """
     Class controlled L293D driver controller
     """
-    def __init__(self, speed, pwm_freq=50):
+    def __init__(self, speed, pwm_freq):
         self.pwm_freq = pwm_freq #pwm frequency
         self.in_fl = 17 #front left motor in_pin_1
         self.in_rl = 27  #rear left motor in_pin_2
