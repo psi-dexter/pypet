@@ -20,8 +20,8 @@ class MotorDriver(object):
         io.setup(self.in_rl, io.OUT)
         io.setup(self.in_fr, io.OUT)
         io.setup(self.in_rr, io.OUT)
-        io.setup(self.pwm_left, io.OUT)
-        io.setup(self.pwm_right, io.OUT)
+        io.setup(self.pwm_left_pin, io.OUT)
+        io.setup(self.pwm_right_pin, io.OUT)
 
 
         self.pwm_left = io.PWM(self.pwm_left_pin, self.pwm_freq)
