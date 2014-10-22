@@ -63,6 +63,8 @@ class MotorDriver(object):
 
     def turn_to_left(self, value):
         self.pwm_left.ChangeDutyCycle(self.current_speed*value)
+        print('currentspeed : '+str(self.current_speed))
+        print('left side speed : '+ str(self.current_speed*value))
 
     def turn_to_right(self, value):
         self.pwm_right.ChangeDutyCycle(self.current_speed*value)
