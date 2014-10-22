@@ -82,9 +82,7 @@ while True:
 
     direction_map = {"f":"forward",
                      "b":"backward",
-                     "c":"rotate",
-                     "l":"turn_to_left",
-                     "r":"turn_to_right"   }
+                     "c":"rotate"  }
     cmd = raw_input("Command, f/b/l/r/x(for exit) 0..100, E.g. f5 :")
     command = cmd[0]
     speed = (float(cmd[1:]))
