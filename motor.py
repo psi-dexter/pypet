@@ -5,33 +5,6 @@ class MotorDriver(object):
     """
     Class controlled L293D driver controller
     """
-    def set_direction(direction):
-        if direction == "forward":
-            io.output(self.in_fl, True)
-            io.output(self.in_rl, False)
-            io.output(self.in_fr, True)
-            io.output(self.in_rr, False)
-
-        elif direction == "backward":
-            io.output(self.in_fl, False)
-            io.output(self.in_rl, True)
-            io.output(self.in_fr, False)
-            io.output(self.in_rr, True)
-
-        elif direction == "rotate":
-            io.output(self.in_fl, False)
-            io.output(self.in_rl, True)
-            io.output(self.in_fr, True)
-            io.output(self.in_rr, False)
-        self.current_direction = direction
-        return direction
-
-    def set_speed(speed):
-        self.pwm_left.ChangeDutyCycle(speed)
-        self.pwm_right.ChangeDutyCycle(speed)
-        self.current_speed = speed
-        return speed
-
     def __init__(self, speed, pwm_freq=50):
         self.pwm_freq = pwm_freq #pwm frequency
         self.in_fl = 17 #front left motor in_pin_1
@@ -58,11 +31,37 @@ class MotorDriver(object):
 
         self.set_speed(0)
 
+    def set_direction(self, direction):
+        if direction == "forward":
+            io.output(self.in_fl, True)
+            io.output(self.in_rl, False)
+            io.output(self.in_fr, True)
+            io.output(self.in_rr, False)
 
-    def turn_to_left(value):
+        elif direction == "backward":
+            io.output(self.in_fl, False)
+            io.output(self.in_rl, True)
+            io.output(self.in_fr, False)
+            io.output(self.in_rr, True)
+
+        elif direction == "rotate":
+            io.output(self.in_fl, False)
+            io.output(self.in_rl, True)
+            io.output(self.in_fr, True)
+            io.output(self.in_rr, False)
+        self.current_direction = direction
+        return direction
+
+    def set_speed(self, speed):
+        self.pwm_left.ChangeDutyCycle(speed)
+        self.pwm_right.ChangeDutyCycle(speed)
+        self.current_speed = speed
+        return speed
+
+    def turn_to_left(self, value):
         self.pwm_left.ChangeDutyCycle(self.current_speed*value)
 
-    def turn_to_right(value):
+    def turn_to_right(self, value):
         self.pwm_right.ChangeDutyCycle(self.current_speed*value)
 
 
