@@ -84,12 +84,17 @@ while True:
                      "l":"turn_to_left",
                      "r":"turn_to_right"   }
     cmd = raw_input("Command, f/b/l/r/x(for exit) 0..100, E.g. f5 :")
+    command = cmd[0]
     speed = (float(cmd[1:]))
-    if cmd[0] in direction_map:
-        x = motor.set_direction(direction_map[cmd[0]])
+    if command in direction_map:
+        x = motor.set_direction(direction_map[command])
         y = motor.set_speed(speed)
         print(x,y)
-    elif cmd[0] == "x":
+    elif command == "l":
+        motor.turn_to_left(speed/100)
+    elif command == "r":
+        motor.turn_to_right(speed/100)
+    elif command == "x":
         motor.stop()
         break
     else:
