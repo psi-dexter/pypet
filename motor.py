@@ -73,7 +73,7 @@ class MotorDriver(object):
 
 
 while True:
-    motor = MotorDriver(0,50)
+    motor = MotorDriver(70,50)
     direction_map = {"f":"forward",
                      "b":"backward",
                      "c":"rotate",
