@@ -83,10 +83,10 @@ while True:
     speed = (float(cmd[1:]))
     if cmd[0] in direction_map:
         x = motor.set_direction(direction_map[cmd[0]])
-        print(x)
-        motor.set_speed(speed)
+        y = motor.set_speed(speed)
+        print(x,y)
     elif cmd[0] == "x":
         motor.stop()
         break
     else:
-        printf("command not found")
+        print("command not found")
