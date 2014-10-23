@@ -61,16 +61,15 @@ class MotorDriver(object):
         self.current_speed = speed
         return speed
 
-    def turn_to_left(self, value):
-        self.pwm_left.ChangeDutyCycle(self.current_speed*value)
-        print('currentspeed : '+str(self.current_speed))
-        print('left side speed : '+ str(self.current_speed*value))
-
-    def turn_to_right(self, value):
-        self.pwm_right.ChangeDutyCycle(self.current_speed*value)
-        print('currentspeed : '+str(self.current_speed))
-        print('left side speed : '+ str(self.current_speed*value))
-
+    def turn(self, side, value):
+        if(side == 'left'):
+            self.pwm_left.ChangeDutyCycle(self.current_speed*value)
+            print('currentspeed : '+str(self.current_speed))
+            print('left side speed : '+ str(self.current_speed*value))
+        elif(side == 'right'):
+            self.pwm_right.ChangeDutyCycle(self.current_speed*value)
+            print('currentspeed : '+str(self.current_speed))
+            print('right side speed : '+ str(self.current_speed*value))
 
 
     def stop(self):
@@ -85,6 +84,8 @@ while True:
     direction_map = {"f":"forward",
                      "b":"backward",
                      "c":"rotate"  }
+    turn_side_map = {"l":'left',
+                     "r":'right'}
     cmd = raw_input("Command, f/b/l/r/x(for exit) 0..100, E.g. f5 :")
     command = cmd[0]
     speed = (float(cmd[1:]))
@@ -92,10 +93,8 @@ while True:
         x = motor.set_direction(direction_map[command])
         y = motor.set_speed(speed)
         print(x,y)
-    elif command == "l":
-        motor.turn_to_left(speed/100)
-    elif command == "r":
-        motor.turn_to_right(speed/100)
+    elif command in turn_side_map:
+        motor.turn(turn_side_map[command], speed/100)
     elif command == "x":
         motor.stop()
         break
