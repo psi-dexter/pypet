@@ -1,15 +1,15 @@
-#import motor
+import motor
 from app import app
-
+car = MotorDriver(50)
 @app.route('/')
 @app.route('/index')
 def index():
-	return "hello!"
+    return "hello!"
 
 @app.route('/car/start', methods=['POST'])
 
 def init_driver():
-    car = MotorDriver(0,50)
+    car.start()
     return "Car has started (pwm=50Hz)", 201
 
 @app.route('/car/move', methods=['POST'])
@@ -21,7 +21,6 @@ def move_car():
     if turn:
         car.turn(turn.json('side'), turn.json('turn_value'))
     return 201
-
 
 @app.route('/car/stop', methods=['POST'])
 def stop_car():

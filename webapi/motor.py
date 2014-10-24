@@ -5,7 +5,7 @@ class MotorDriver(object):
     """
     Class controlled L293D driver controller
     """
-    def __init__(self, speed, pwm_freq):
+    def __init__(self, pwm_freq):
         self.pwm_freq = pwm_freq #pwm frequency
         self.in_fl = 17 #front left motor in_pin_1
         self.in_rl = 27  #rear left motor in_pin_2
@@ -16,6 +16,7 @@ class MotorDriver(object):
         self.pwm_left_pin = 18 #leftside  speed control
         self.pwm_right_pin = 25 #rightside  speed control
 
+    def start(self):
         io.setup(self.in_fl, io.OUT)
         io.setup(self.in_rl, io.OUT)
         io.setup(self.in_fr, io.OUT)
@@ -30,9 +31,8 @@ class MotorDriver(object):
         self.pwm_right.start(0)
         self.current_direction = "forward"
         self.current_speed = 0
-        #self.set_direction("forward")
-
-        #self.set_speed(0)
+        self.set_direction("forward")
+        self.set_speed(0)
 
     def set_direction(self, direction):
         if direction == "forward":
@@ -64,39 +64,15 @@ class MotorDriver(object):
     def turn(self, side, value):
         if(side == 'left'):
             self.pwm_left.ChangeDutyCycle(self.current_speed*value)
-            print('currentspeed : '+str(self.current_speed))
-            print('left side speed : '+ str(self.current_speed*value))
+            #print('currentspeed : '+str(self.current_speed))
+            #print('left side speed : '+ str(self.current_speed*value))
         elif(side == 'right'):
             self.pwm_right.ChangeDutyCycle(self.current_speed*value)
-            print('currentspeed : '+str(self.current_speed))
-            print('right side speed : '+ str(self.current_speed*value))
-
+            #print('currentspeed : '+str(self.current_speed))
+            #print('right side speed : '+ str(self.current_speed*value))
 
     def stop(self):
         self.pwm_left.stop()
         self.pwm_right.stop()
         io.cleanup()
 
-
-motor = MotorDriver(70,50)
-while True:
-
-    direction_map = {"f":"forward",
-                     "b":"backward",
-                     "c":"rotate"  }
-    turn_side_map = {"l":'left',
-                     "r":'right'}
-    cmd = raw_input("Command, f/b/l/r/x(for exit) 0..100, E.g. f5 :")
-    command = cmd[0]
-    speed = (float(cmd[1:]))
-    if command in direction_map:
-        x = motor.set_direction(direction_map[command])
-        y = motor.set_speed(speed)
-        print(x,y)
-    elif command in turn_side_map:
-        motor.turn(turn_side_map[command], speed/100)
-    elif command == "x":
-        motor.stop()
-        break
-    else:
-        print("command not found")
