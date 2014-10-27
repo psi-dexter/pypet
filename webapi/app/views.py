@@ -1,4 +1,5 @@
-import motor
+from motor import MotorDriver
+from flask import jsonify, abort, request
 from app import app
 car = MotorDriver(50)
 @app.route('/')
