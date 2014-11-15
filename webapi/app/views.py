@@ -16,11 +16,11 @@ def init_driver():
 @app.route('/car/move', methods=['POST'])
 
 def move_car():
-    car.set_direction(request.json['direction'])
-    car.set_speed(request.json['speed'])
+    car.set_direction(str(request.json['direction']))
+    car.set_speed(float(request.json['speed']))
     turn = request.json.get('turn', False)
     if turn:
-        car.turn(turn.json('side'), turn.json('turn_value'))
+        car.turn(str(turn.json('side')), float(turn.json('turn_value')))
     return 201
 
 @app.route('/car/stop', methods=['POST'])
