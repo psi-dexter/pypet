@@ -97,7 +97,13 @@ func setPiPWNDutyCyle(pin, duty int){
 }
 
 func writePiGPIO(pin int, value bool){
-	C.gpio_write(C.uint(pin),value)
+	var i int
+	if value {
+		i=1
+	}else{
+		i=0
+	}
+	C.gpio_write(C.uint(pin),C.uint(i))
 }
 
 func disconnectPiGPIO(){
