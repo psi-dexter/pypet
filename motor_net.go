@@ -1,8 +1,8 @@
 package main
 // #cgo LDFLAGS: -lpigpiod_if -lrt -lpthread
 // #include "pigpiod_if.h"
+import "C"
 import (
-	"C"
 	"fmt"
 	"time"
 	"encoding/json"
@@ -117,8 +117,12 @@ func disconnectPiGPIO(){
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {  
   w.Header().Set("Content-type", "text/plain")
-
-  fmt.Fprintf(w, jsonMsg)
+  var msg string = `{"status":"OK"}`
+  jsonMsg, err := json.Marshal(msg)
+  if err != nil {
+        panic(err)
+    }
+  fmt.Fprintf(w, string(jsonMsg))
 }
 
 func main(){
