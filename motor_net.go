@@ -16,7 +16,7 @@ type Car struct{
 	frontLeft_pin, frontRight_pin, rearLeft_pin, rearRight_pin int
 	leftPWM_pin, rightPWM_pin int
 	direction string
-	speed int = 0
+	speed int
 }
 
 func (car *Car) init(){
@@ -41,12 +41,12 @@ func (car *Car) start(){
 }
 
 func (car *Car) shutdown(){
-	writePiGPIO(car.frontLeft_pin,0)
-	writePiGPIO(car.frontRight_pin,0)
-	writePiGPIO(car.rearLeft_pin,0)
-	writePiGPIO(car.rearRight_pin,0)
-	writePiGPIO(car.leftPWM_pin,0)
-	writePiGPIO(car.rightPWM_pin,0)
+	writePiGPIO(car.frontLeft_pin, false)
+	writePiGPIO(car.frontRight_pin,false)
+	writePiGPIO(car.rearLeft_pin,false)
+	writePiGPIO(car.rearRight_pin,false)
+	writePiGPIO(car.leftPWM_pin,false)
+	writePiGPIO(car.rightPWM_pin,false)
 	disconnectPiGPIO()
 }
 
@@ -97,7 +97,7 @@ func setPiPWNDutyCyle(pin, duty int){
 }
 
 func writePiGPIO(pin int, value bool){
-	C.gpio_write(C.uint(pin),C.uint(value))
+	C.gpio_write(C.uint(pin),value)
 }
 
 func disconnectPiGPIO(){
