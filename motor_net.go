@@ -48,7 +48,7 @@ func (car *Car) start(){
 	car.status = "Started"
 }
 
-func (car *Car) HTTPStatus(w http.ResponseWriter, r *http.Request){
+func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-type", "text/plain")
   	var msg string = `{"status":"` + car.status + `"}`
   	jsonMsg, err := json.Marshal(msg)
@@ -141,24 +141,14 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
   fmt.Fprintf(w, string(jsonMsg))
 }
 
-func getStatus(w http.ResponseWriter, r *http.Request, c *Car){
-	w.Header().Set("Content-type", "text/plain")
-	jsonMsg, err := json.Marshal(c)
-	if err != nil {
-        panic(err)
-    }
-  fmt.Fprintf(w, string(jsonMsg))
-}
 
 
 
 func main(){
 	car := new(Car)
 	mux := http.NewServeMux()
-	CarStatus := car.HTTPStatus
 	
-	mux.Handle("/", rootHandler)
-	mux.Handle("/status", CarStatus)
+	mux.Handle("/status", car)
 
   	http.ListenAndServe(":8080", mux)
 	car.init()
