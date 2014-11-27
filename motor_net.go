@@ -125,7 +125,7 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
   fmt.Fprintf(w, string(jsonMsg))
 }
 
-func statusHandler(w http.ResponseWriter, r *http.Request, c *car){
+func getStatus(w http.ResponseWriter, r *http.Request, c *Car){
 	w.Header().Set("Content-type", "text/plain")
 	jsonMsg, err := json.Marshal(c)
 	if err != nil {
@@ -134,10 +134,17 @@ func statusHandler(w http.ResponseWriter, r *http.Request, c *car){
   fmt.Fprintf(w, string(jsonMsg))
 }
 
+func makeHandler(fn func(http.ResponseWriter, *http.Request, *Car)) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+		fn(w, r, *Car)
+		}
+	}
+
+
 func main(){
 	car := new(Car)
 	http.HandleFunc("/", rootHandler)
-	http.HandleFunc("/status", statusHandler, c *car)
+	http.HandleFunc("/status", makeHandler(getStatus(car)))
 
   	http.ListenAndServe(":8080", nil)
 	car.init()
