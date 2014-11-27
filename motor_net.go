@@ -22,6 +22,7 @@ type Car struct{
 	leftPWM_pin, rightPWM_pin int
 	direction string
 	speed int
+	status string
 }
 
 func (car *Car) init(){
@@ -31,6 +32,7 @@ func (car *Car) init(){
 	car.rearRight_pin = rearRight_pin
 	car.leftPWM_pin = leftPWM_pin
 	car.rightPWM_pin = rightPWM_pin
+	car.status = "Initialiazed"
 }
 
 func (car *Car) start(){
@@ -43,6 +45,18 @@ func (car *Car) start(){
 	initPiPWM(car.rightPWM_pin,50)
 	setPiPWNDutyCyle(car.leftPWM_pin,0)
 	setPiPWNDutyCyle(car.rightPWM_pin,0)
+	car.status = "Started"
+}
+
+func (car *Car) HTTPStatus(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-type", "text/plain")
+  	var msg string = `{"status":"` + car.status + `"}`
+  	jsonMsg, err := json.Marshal(msg)
+  	if err != nil {
+  		panic(err)
+    }
+  fmt.Fprintf(w, string(jsonMsg))
+
 }
 
 func (car *Car) shutdown(){
@@ -53,6 +67,7 @@ func (car *Car) shutdown(){
 	writePiGPIO(car.leftPWM_pin,false)
 	writePiGPIO(car.rightPWM_pin,false)
 	disconnectPiGPIO()
+	car.status = "Off"
 }
 
 func (car *Car) setDirection(direction string){
@@ -78,6 +93,7 @@ func (car *Car) setDirection(direction string){
 			writePiGPIO(car.rightPWM_pin, false)
 			car.direction = direction
 	}
+	car.status = "Moving"
 }
 
 func (car *Car) setSpeed(speed int){
@@ -134,19 +150,17 @@ func getStatus(w http.ResponseWriter, r *http.Request, c *Car){
   fmt.Fprintf(w, string(jsonMsg))
 }
 
-func makeHandler(fn func(http.ResponseWriter, *http.Request, *Car)) http.HandlerFunc {
-		return func(w http.ResponseWriter, r *http.Request) {
-		fn(w, r, *Car)
-		}
-	}
 
 
 func main(){
 	car := new(Car)
-	http.HandleFunc("/", rootHandler)
-	http.HandleFunc("/status", makeHandler(getStatus(car)))
+	mux := http.NewServeMux()
+	CarStatus := car.HTTPStatus
+	
+	mux.Handle("/", rootHandler)
+	mux.Handle("/status", CarStatus)
 
-  	http.ListenAndServe(":8080", nil)
+  	http.ListenAndServe(":8080", mux)
 	car.init()
 	car.start()
 	car.setDirection("forward")
