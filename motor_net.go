@@ -59,6 +59,7 @@ func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
   	jsonMsg, err := json.Marshal(msg)
 	if err != nil {
 	panic(err)
+	}
   fmt.Fprintf(w, string(jsonMsg))
 
 }
