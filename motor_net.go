@@ -50,7 +50,7 @@ func (car *Car) start(){
 
 func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-type", "text/plain")
-  	if car.status {
+  	if len(car.status) > 0 {
   		var msg string = `{"status":"` + car.status + `"}`
   	}else{
   		http.NotFound(w, r)
