@@ -1,8 +1,13 @@
 package main
 // #cgo LDFLAGS: -lpigpiod_if -lrt -lpthread
 // #include "pigpiod_if.h"
-import "C"
-import "time"
+import (
+	"C"
+	"fmt"
+	"time"
+	"encoding/json"
+	"net/http"
+)
 const (
 	frontLeft_pin int = 17
 	frontRight_pin int = 22
@@ -110,9 +115,17 @@ func disconnectPiGPIO(){
 	C.pigpio_stop()
 }
 
+func rootHandler(w http.ResponseWriter, r *http.Request) {  
+  w.Header().Set("Content-type", "text/plain")
+
+  fmt.Fprintf(w, jsonMsg)
+}
 
 func main(){
 	car := new(Car)
+	http.HandleFunc("/", rootHandler)
+
+  	http.ListenAndServe(":8080", nil)
 	car.init()
 	car.start()
 	car.setDirection("forward")
