@@ -50,11 +50,15 @@ func (car *Car) start(){
 
 func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-type", "text/plain")
-  	var msg string = `{"status":"` + car.status + `"}`
+  	if car.status {
+  		var msg string = `{"status":"` + car.status + `"}`
+  	}else{
+  		http.NotFound(w, r)
+  		var msg string = `{"status":"NotExists"}`
+  	}
   	jsonMsg, err := json.Marshal(msg)
-  	if err != nil {
-  		panic(err)
-    }
+	if err != nil {
+	panic(err)
   fmt.Fprintf(w, string(jsonMsg))
 
 }
