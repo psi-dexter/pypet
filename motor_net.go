@@ -33,7 +33,7 @@ type movement_struct struct {
 
 type turn_struct struct {
     Turn_direction string
-    Turn_value float
+    Turn_value float32
 }
 
 type speed_struct struct {
@@ -104,9 +104,9 @@ func (car *Car) setDirection(direction string){
 
 func (car *Car) setTurn(turn_direction string, turn_value float){
 	if turn_direction == "left" {
-		C.set_PWM_dutycycle(C.uint(car.leftPWM_pin), C.uint(car.speed*turn_value))
+		C.set_PWM_dutycycle(C.uint(car.leftPWM_pin), C.uint(int(car.speed*turn_value)))
 	} else if turn_direction == "right"{
-		C.set_PWM_dutycycle(C.uint(car.rightPWM_pin), C.uint(car.speed*turn_value))
+		C.set_PWM_dutycycle(C.uint(car.rightPWM_pin), C.uint(int(car.speed*turn_value))
 	}
 }
 func (car *Car) setSpeed(speed int){
