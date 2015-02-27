@@ -51,15 +51,22 @@ func (car *Car) start(){
 func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-type", "text/plain")
   	var msg string
-  	if len(car.status) > 0 {
-  		msg = `{"status":"` + car.status + ` url: ` + r.RequestURI + `"}`
-  	}else{
-  		http.NotFound(w, r)
-  		msg = `{"status":"NotExists"}`
-  	}
-  	jsonMsg, err := json.Marshal(msg)
-	if err != nil {
-	panic(err)
+  	var url string
+
+
+  	url = r.RequestURI
+  	if strings.Split(url, "/")[2] == "status" {
+
+	  	if len(car.status) > 0 {
+	  		msg = `{"status":"` + car.status + ` url: ` + r.RequestURI + `"}`
+	  	}else{
+	  		http.NotFound(w, r)
+	  		msg = `{"status":"NotExists"}`
+	  	}
+	  	jsonMsg, err := json.Marshal(msg)
+		if err != nil {
+		panic(err)
+		}
 	}
   fmt.Fprintf(w, string(jsonMsg))
 
@@ -157,7 +164,7 @@ func main(){
 	car.init()
 	car.start()
 	
-	mux.Handle("/status", car)
+	mux.Handle("/car", car)
 
   	http.ListenAndServe(":8080", mux)
 	car.setDirection("forward")
