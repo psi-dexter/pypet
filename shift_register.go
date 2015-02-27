@@ -34,6 +34,9 @@ func deinitRegister() {
 }
 
 
+func connectPiGPIO(){
+	C.pigpio_start(nil,nil)
+}
 
 func disconnectPiGPIO(){
 	C.pigpio_stop()
