@@ -102,7 +102,7 @@ func (car *Car) setDirection(direction string){
 	car.status = "Moving"
 }
 
-func (car *Car) setTurn(turn_direction string, turn_value float){
+func (car *Car) setTurn(turn_direction string, turn_value float32){
 	if turn_direction == "left" {
 		C.set_PWM_dutycycle(C.uint(car.leftPWM_pin), C.uint(int(car.speed*turn_value)))
 	} else if turn_direction == "right"{
