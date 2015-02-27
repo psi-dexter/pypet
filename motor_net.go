@@ -153,12 +153,13 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 func main(){
 	car := new(Car)
 	mux := http.NewServeMux()
+
+	car.init()
+	car.start()
 	
 	mux.Handle("/status", car)
 
   	http.ListenAndServe(":8080", mux)
-	car.init()
-	car.start()
 	car.setDirection("forward")
 	car.setSpeed(200)
 	time.Sleep(3 * time.Second)
