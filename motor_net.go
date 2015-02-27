@@ -26,9 +26,20 @@ type Car struct{
 	status string
 }
 
-type test_struct struct {
-    Test string
+type movement_struct struct {
+    Speed int
+    Direction string
 }
+
+type turn_struct struct {
+    Turn_direction string
+    Turn_value float
+}
+
+type speed_struct struct {
+    Speed int
+}
+
 
 func (car *Car) init(){
 	car.frontLeft_pin = frontLeft_pin
@@ -91,6 +102,13 @@ func (car *Car) setDirection(direction string){
 	car.status = "Moving"
 }
 
+func (car *Car) setTurn(turn_direction string, turn_value float){
+	if turn_direction == "left" {
+		C.set_PWM_dutycycle(C.uint(car.leftPWM_pin), C.uint(car.speed*turn_value))
+	} else if turn_direction == "right"{
+		C.set_PWM_dutycycle(C.uint(car.rightPWM_pin), C.uint(car.speed*turn_value))
+	}
+}
 func (car *Car) setSpeed(speed int){
 	setPiPWNDutyCyle(car.rightPWM_pin, speed)
 	setPiPWNDutyCyle(car.rightPWM_pin, speed)
@@ -162,12 +180,19 @@ func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
 			fmt.Fprintf(w, string(jsonMsg))
 		case "POST" :
 			decoder := json.NewDecoder(body)
-		    var t test_struct   
-		    err := decoder.Decode(&t)
+		    var move movement_struct
+		    var turn turn_struct
+		    err := decoder.Decode(&move)
 		    if err != nil {
 		        panic(err)
 		    }
-			fmt.Fprintf(w, t.Test)
+		    if strings.Count(url, "/") > 1 && strings.Split(url, "/")[2] == "move" {
+		    	car.setDirection(move.Direction)
+		    	car.setSpeed(move.Speed)
+		    } else if strings.Count(url, "/") > 1 && strings.Split(url, "/")[2] == "turn" {
+		    	car.setTurn(turn.Turn_direction, turn.Turn_value)
+		    }
+			fmt.Fprintf(w, car.status)
  	}
 
 }
