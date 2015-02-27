@@ -164,7 +164,7 @@ func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
   	
   	switch method {
   		case "GET" :
-
+  			fmt.Println("got GET verb")
 		  	if strings.Count(url, "/") > 1 && strings.Split(url, "/")[2] == "status" {
 			  	if len(car.status) > 0 {
 			  		msg = `{"status":"` + car.status + `"}`
@@ -179,6 +179,7 @@ func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
 			}
 			fmt.Fprintf(w, string(jsonMsg))
 		case "POST" :
+			fmt.Println("got POST verb")
 			decoder := json.NewDecoder(body)
 		    var move movement_struct
 		    var turn turn_struct
