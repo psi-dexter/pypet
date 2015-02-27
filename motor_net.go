@@ -7,6 +7,7 @@ import (
 	"time"
 	"encoding/json"
 	"net/http"
+	"strings"
 )
 const (
 	frontLeft_pin int = 17
