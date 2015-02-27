@@ -157,7 +157,13 @@ func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
 			}
 			fmt.Fprintf(w, string(jsonMsg))
 		case "POST" :
-			fmt.Fprintf(w, body)
+			decoder := json.NewDecoder(body)
+		    var t test_struct   
+		    err := decoder.Decode(&t)
+		    if err != nil {
+		        panic()
+		    }
+			fmt.Fprintf(w, String(t))
  	}
 
 }
