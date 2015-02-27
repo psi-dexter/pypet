@@ -136,10 +136,10 @@ func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-type", "text/plain")
   	var msg string
   	var url string
-
+  	body := r.Body
   	method := r.Method
   	url = r.RequestURI
-  	body = r.Body
+  	
   	switch method {
   		case "GET" :
 
