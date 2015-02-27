@@ -48,6 +48,15 @@ func toBool(i int) bool{
 	}
 	return result
 }
+func writePiGPIO(pin int, value bool){
+	var i int
+	if value {
+		i=1
+	}else{
+		i=0
+	}
+	C.gpio_write(C.uint(pin),C.uint(i))
+}
 
 func main(){
 	initRegister()
@@ -55,7 +64,7 @@ func main(){
 	afinity = "10100000"
 	writePiGPIO(ST_clock_pin,false)
 	for i:=0; i<len(afinity);i++{
-		writePiGPIO(DS_serial_pin, toBool(int(simple[i])-48))
+		writePiGPIO(DS_serial_pin, toBool(int(afinity[i])-48))
 		writePiGPIO(SH_clock_pin, true)
 		writePiGPIO(SH_clock_pin, false)
 	}
