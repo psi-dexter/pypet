@@ -161,7 +161,7 @@ func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
   	body := r.Body
   	method := r.Method
   	url = r.RequestURI
-  	fmt.Println("got verb:" method +" url:" + url)
+  	fmt.Println("got verb:"+ method +" url:" + url)
   	switch method {
   		case "GET" :
   			fmt.Println("got GET verb")
