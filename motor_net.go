@@ -174,6 +174,7 @@ func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
 
 
 func main(){
+	fmt.Println("Car server started...")
 	car := new(Car)
 	mux := http.NewServeMux()
 
@@ -181,7 +182,7 @@ func main(){
 	car.start()
 	
 	mux.Handle("/car", car)
-	mux.Handle("/car/(status|start|stop|move)", car)
+	mux.Handle("\/car\/(status|start|stop|move)", car)
 	
   	http.ListenAndServe(":8080", mux)
 	car.setDirection("forward")
