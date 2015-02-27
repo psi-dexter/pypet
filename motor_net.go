@@ -99,7 +99,7 @@ func (car *Car) setDirection(direction string){
 			writePiGPIO(car.rightPWM_pin, false)
 			car.direction = direction
 	}
-	car.status = "Moving"
+	car.status = "Moving " + car.direction
 }
 
 func (car *Car) setTurn(turn_direction string, turn_value float32){
@@ -211,7 +211,8 @@ func main(){
 	mux.Handle("/car/status", car)
 	mux.Handle("/car/start", car)
 	mux.Handle("/car/stop", car)
-	mux.Handle("/car/move)", car)
+	mux.Handle("/car/move", car)
+	mux.Handle("/car/turn", car)
 	
   	http.ListenAndServe(":8080", mux)
 	car.setDirection("forward")
