@@ -26,6 +26,10 @@ type Car struct{
 	status string
 }
 
+type test_struct struct {
+    Test string
+}
+
 func (car *Car) init(){
 	car.frontLeft_pin = frontLeft_pin
 	car.frontRight_pin = frontRight_pin
@@ -161,9 +165,9 @@ func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
 		    var t test_struct   
 		    err := decoder.Decode(&t)
 		    if err != nil {
-		        panic()
+		        panic(err)
 		    }
-			fmt.Fprintf(w, String(t))
+			fmt.Fprintf(w, t.Test)
  	}
 
 }
