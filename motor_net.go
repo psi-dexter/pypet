@@ -182,7 +182,10 @@ func main(){
 	car.start()
 	
 	mux.Handle("/car", car)
-	mux.Handle("\/car\/(status|start|stop|move)", car)
+	mux.Handle("/car/status", car)
+	mux.Handle("/car/start", car)
+	mux.Handle("/car/stop", car)
+	mux.Handle("/car/move)", car)
 	
   	http.ListenAndServe(":8080", mux)
 	car.setDirection("forward")
