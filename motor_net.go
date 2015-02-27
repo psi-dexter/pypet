@@ -60,16 +60,16 @@ func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
 
 	  	if len(car.status) > 0 {
 	  		msg = `{"status":"` + car.status + ` url: ` + r.RequestURI + `"}`
-	  	}else{
-	  		http.NotFound(w, r)
-	  		msg = `{"status":"NotExists"}`
 	  	}
-	  	jsonMsg, err := json.Marshal(msg)
-		if err != nil {
-			panic(err)
-		}
-		fmt.Fprintf(w, string(jsonMsg))
+	}else{
+  		http.NotFound(w, r)
+  		msg = `{"status":"NotExists"}`
+  	}
+  	jsonMsg, err := json.Marshal(msg)
+	if err != nil {
+		panic(err)
 	}
+	fmt.Fprintf(w, string(jsonMsg))
   
 
 }
