@@ -4,10 +4,10 @@ package main
 import "C"
 import (
 	"fmt"
-	"time"
-	"encoding/json"
-	"net/http"
-	"strings"
+//	"time"
+	//"encoding/json"
+	//"net/http"
+	//"strings"
 )
 const (
 	SH_clock_pin int = 17
@@ -22,6 +22,9 @@ func initRegister() {
 	initPiGPIO(ST_clock_pin,1)
 }
 
+func initPiGPIO(pin, mode int){
+	C.set_mode(C.uint(pin), C.uint(mode))
+}
 
 func deinitRegister() {
 	writePiGPIO(SH_clock_pin,false)
