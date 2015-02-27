@@ -56,7 +56,7 @@ func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
 
 
   	url = r.RequestURI
-  	if strings.Split(url, "/")[1] == "car" {
+  	if strings.Count(url, "/") > 1 ; strings.Split(url, "/")[2] == "status" {
 
 	  	if len(car.status) > 0 {
 	  		msg = `{"status":"` + car.status + ` url: ` + r.RequestURI + `"}`
@@ -167,6 +167,7 @@ func main(){
 	car.start()
 	
 	mux.Handle("/car", car)
+	mux.Handle("/car/status", car)
 
   	http.ListenAndServe(":8080", mux)
 	car.setDirection("forward")
