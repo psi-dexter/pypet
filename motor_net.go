@@ -56,7 +56,7 @@ func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
 
 
   	url = r.RequestURI
-  	if strings.Count(url, "/") > 1 ; strings.Split(url, "/")[2] == "status" {
+  	if strings.Count(url, "/") > 1 && strings.Split(url, "/")[2] == "status" {
 
 	  	if len(car.status) > 0 {
 	  		msg = `{"status":"` + car.status + ` url: ` + r.RequestURI + `"}`
