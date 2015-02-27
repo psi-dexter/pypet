@@ -62,6 +62,7 @@ func writePiGPIO(pin int, value bool){
 }
 
 func main(){
+	fmt.Println("Started...")
 	initRegister()
 	var afinity string
 	afinity = "10100000"
@@ -73,4 +74,5 @@ func main(){
 	}
 	writePiGPIO(ST_clock_pin,true)
 	writePiGPIO(ST_clock_pin,false)
+	fmt.Println("Stoped...")
 }
