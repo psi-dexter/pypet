@@ -4,7 +4,7 @@ package main
 import "C"
 import (
 	"fmt"
-//	"time"
+	"time"
 	//"encoding/json"
 	//"net/http"
 	//"strings"
@@ -71,8 +71,11 @@ func main(){
 		writePiGPIO(DS_serial_pin, toBool(int(afinity[i])-48))
 		writePiGPIO(SH_clock_pin, true)
 		writePiGPIO(SH_clock_pin, false)
+		time.Sleep(100 * time.Millisecond)
 	}
 	writePiGPIO(ST_clock_pin,true)
+	time.Sleep(100 * time.Millisecond)
 	writePiGPIO(ST_clock_pin,false)
+	time.Sleep(100 * time.Millisecond)
 	fmt.Println("Stoped...")
 }
