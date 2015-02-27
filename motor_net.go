@@ -49,30 +49,6 @@ func (car *Car) start(){
 	car.status = "Started"
 }
 
-func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
-	w.Header().Set("Content-type", "text/plain")
-  	var msg string
-  	var url string
-
-
-  	url = r.RequestURI
-  	if strings.Count(url, "/") > 1 && strings.Split(url, "/")[2] == "status" {
-
-	  	if len(car.status) > 0 {
-	  		msg = `{"status":"` + car.status + ` url: ` + r.RequestURI + `"}`
-	  	}
-	}else{
-  		http.NotFound(w, r)
-  		msg = `{"status":"NotExists"}`
-  	}
-  	jsonMsg, err := json.Marshal(msg)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Fprintf(w, string(jsonMsg))
-  
-
-}
 
 func (car *Car) shutdown(){
 	writePiGPIO(car.frontLeft_pin, false)
@@ -156,7 +132,35 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
   fmt.Fprintf(w, string(jsonMsg))
 }
 
+func (car *Car) ServeHTTP(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-type", "text/plain")
+  	var msg string
+  	var url string
 
+  	method := r.Method
+  	url = r.RequestURI
+  	body = r.Body
+  	switch method {
+  		case "GET" :
+
+		  	if strings.Count(url, "/") > 1 && strings.Split(url, "/")[2] == "status" {
+			  	if len(car.status) > 0 {
+			  		msg = `{"status":"` + car.status + `"}`
+			  	}
+			}else{
+		  		http.NotFound(w, r)
+		  		msg = `{"status":"NotExists"}`
+		  	}
+		  	jsonMsg, err := json.Marshal(msg)
+			if err != nil {
+				panic(err)
+			}
+			fmt.Fprintf(w, string(jsonMsg))
+		case "POST" :
+			fmt.Fprintf(w, body)
+ 	}
+
+}
 
 
 func main(){
@@ -167,8 +171,8 @@ func main(){
 	car.start()
 	
 	mux.Handle("/car", car)
-	mux.Handle("/car/status", car)
-
+	mux.Handle("/car/(status|start|stop|move)", car)
+	
   	http.ListenAndServe(":8080", mux)
 	car.setDirection("forward")
 	car.setSpeed(200)
