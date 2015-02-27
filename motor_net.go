@@ -104,9 +104,9 @@ func (car *Car) setDirection(direction string){
 
 func (car *Car) setTurn(turn_direction string, turn_value float32){
 	if turn_direction == "left" {
-		C.set_PWM_dutycycle(C.uint(car.leftPWM_pin), C.uint(int(car.speed*turn_value)))
+		C.set_PWM_dutycycle(C.uint(car.leftPWM_pin), C.uint(int(float32(car.speed)*turn_value)))
 	} else if turn_direction == "right"{
-		C.set_PWM_dutycycle(C.uint(car.rightPWM_pin), C.uint(int(car.speed*turn_value)))
+		C.set_PWM_dutycycle(C.uint(car.rightPWM_pin), C.uint(int(float32(car.speed)*turn_value)))
 	}
 }
 func (car *Car) setSpeed(speed int){
