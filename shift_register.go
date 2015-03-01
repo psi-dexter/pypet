@@ -10,9 +10,9 @@ import (
 	//"strings"
 )
 const (
-	SH_clock_pin int = 17
-	DS_serial_pin int = 22
-	ST_clock_pin int = 27 // set clock
+	SH_clock_pin int = 11
+	DS_serial_pin int = 12
+	ST_clock_pin int = 13 // set clock
 )
 
 func initRegister() {
@@ -43,7 +43,7 @@ func disconnectPiGPIO(){
 }
 
 func toBool(i int) bool{
-	var result bool 
+	var result bool
 	if i == 1 {
 		result = true
 	} else {
