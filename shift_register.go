@@ -65,7 +65,7 @@ func main(){
 	fmt.Println("Started...")
 	initRegister()
 	var afinity string
-	afinity = "10100000"
+	afinity = "11100000"
 	writePiGPIO(ST_clock_pin,false)
 	for i:=0; i<len(afinity);i++{
 		writePiGPIO(DS_serial_pin, toBool(int(afinity[i])-48))
@@ -78,4 +78,5 @@ func main(){
 	writePiGPIO(ST_clock_pin,false)
 	time.Sleep(100 * time.Millisecond)
 	fmt.Println("Stoped...")
+	deinitRegister()
 }
