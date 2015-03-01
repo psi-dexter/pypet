@@ -10,9 +10,9 @@ import (
 	//"strings"
 )
 const (
-	SH_clock_pin int = 11
-	DS_serial_pin int = 12
-	ST_clock_pin int = 13 // set clock
+	SH_clock_pin int = 17
+	DS_serial_pin int = 18
+	ST_clock_pin int = 27 // set clock
 )
 
 func initRegister() {
