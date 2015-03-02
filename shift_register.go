@@ -67,6 +67,7 @@ func main(){
 	initRegister()
 	var afinity string
 	afinity =  os.Args[1] //"10100000"
+	fmt.Println(afinity)
 	writePiGPIO(ST_clock_pin,false)
 	for i:=0; i<len(afinity);i++{
 		writePiGPIO(DS_serial_pin, toBool(int(afinity[i])-48))
