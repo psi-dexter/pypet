@@ -5,13 +5,14 @@ import "C"
 import (
 	"fmt"
 	"time"
+	"os"
 	//"encoding/json"
 	//"net/http"
 	//"strings"
 )
 const (
 	SH_clock_pin int = 17
-	DS_serial_pin int = 18
+	DS_serial_pin int = 22
 	ST_clock_pin int = 27 // set clock
 )
 
@@ -43,7 +44,7 @@ func disconnectPiGPIO(){
 }
 
 func toBool(i int) bool{
-	var result bool
+	var result bool 
 	if i == 1 {
 		result = true
 	} else {
@@ -65,7 +66,7 @@ func main(){
 	fmt.Println("Started...")
 	initRegister()
 	var afinity string
-	afinity = "11100000"
+	afinity =  os.Args[1] //"10100000"
 	writePiGPIO(ST_clock_pin,false)
 	for i:=0; i<len(afinity);i++{
 		writePiGPIO(DS_serial_pin, toBool(int(afinity[i])-48))
@@ -77,6 +78,7 @@ func main(){
 	time.Sleep(100 * time.Millisecond)
 	writePiGPIO(ST_clock_pin,false)
 	time.Sleep(100 * time.Millisecond)
-	fmt.Println("Stoped...")
 	deinitRegister()
+	disconnectPiGPIO()
+	fmt.Println("Stoped...")
 }
